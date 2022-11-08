@@ -42,6 +42,12 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service)
         });
+        app.get("/user-review", async (req, res) => {
+            const query = {};
+            const cursor = ordersCollection.find(query);
+            const service = await cursor.toArray();
+            res.send(service)
+        });
         // service add on database 
         app.post("/services", async (req, res) => {
             const service = req.body;
@@ -54,6 +60,7 @@ async function run() {
             const result = await ordersCollection.insertOne(order);
             res.send(result)
         });
+        
     }
     finally {
 
