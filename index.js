@@ -65,7 +65,7 @@ async function run() {
         app.get("/user-review", async (req, res) => {
             const query = {};
             const cursor = ordersCollection.find(query);
-            const service = await cursor.toArray();
+            const service = await cursor.sort({createAt:-1}).toArray();
             res.send(service)
         });
         // service add on database 
@@ -100,6 +100,12 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
             const result = await ordersCollection.deleteOne(query)
+            res.send(result);
+        });
+        app.put("/user-reviews/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await ordersCollection.put(query)
             res.send(result);
         });
     }
