@@ -10,10 +10,8 @@ require("dotenv").config();
 
 
 app.get("/", (req, res) => {
-    res.send("genius car running")
+    res.send("safis photography")
 });
-
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ldps5dz.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -60,7 +58,17 @@ async function run() {
             const result = await ordersCollection.insertOne(order);
             res.send(result)
         });
-        
+        app.get("/user-review", async (req, res) => {
+            let query = {};
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
+            const cursor = ordersCollection.find(query);
+            const order = await cursor.toArray();
+            res.send(order);
+        });
     }
     finally {
 
@@ -69,5 +77,5 @@ async function run() {
 run().catch(err => console.error(err))
 
 app.listen(port, () => {
-    console.log(`genius car running on port ${port}`)
+    console.log(`safis photography ${port}`)
 })
