@@ -58,7 +58,7 @@ async function run() {
             const result = await ordersCollection.insertOne(order);
             res.send(result)
         });
-        app.get("/user-review", async (req, res) => {
+        app.get("/user-reviews", async (req, res) => {
             let query = {};
             if (req.query.email) {
                 query = {
@@ -66,8 +66,8 @@ async function run() {
                 }
             }
             const cursor = ordersCollection.find(query);
-            const order = await cursor.toArray();
-            res.send(order);
+            const orders = await cursor.toArray();
+            res.send(orders);
         });
     }
     finally {
