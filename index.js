@@ -62,8 +62,16 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service)
         });
-        app.get("/user-review", async (req, res) => {
-            const query = {};
+        app.get("/user-review/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const service = await ordersCollection.findOne(query);
+            res.send(service)
+        });
+        app.get("/servicereviewbyid/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log(id)                                                                 
+            const query = {service:id};
             const cursor = ordersCollection.find(query);
             const service = await cursor.sort({createAt:-1}).toArray();
             res.send(service)
@@ -82,7 +90,7 @@ async function run() {
         });
         app.get("/user-reviews",verifyJWT, async (req, res) => {
             const decoded = req.decoded;
-            console.log("inside order api", decoded)
+            // console.log("inside order api", decoded)
             if (decoded.email !== req.query.email) {
                 res.status(403).send("Unauthorised access")
             }
