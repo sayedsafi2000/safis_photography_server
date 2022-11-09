@@ -110,11 +110,21 @@ async function run() {
             const result = await ordersCollection.deleteOne(query)
             res.send(result);
         });
+
         app.put("/user-reviews/:id", async (req, res) => {
             const id = req.params.id;
+            const update = req.body;
+            const options = {upsert: true}
+            const updateReview = {
+                $set: {
+                    message: update.message,
+                    rating: update.rating
+                }
+            }
             const query = { _id: ObjectId(id) }
-            const result = await ordersCollection.put(query)
+            const result = await ordersCollection.updateOne(query, updateReview, options)
             res.send(result);
+            console.log(result)
         });
     }
     finally {
